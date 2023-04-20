@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+<section class="section-content padding-y bg">
+    <div class="container">
+        <h2 class="title-page">Category products</h2>
+        <nav>
+            <ol class="breadcrumb text-white">
+                <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                <!-- <li class="breadcrumb-item"><a href="#">Best category</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Great articles</li> -->
+            </ol>
+        </nav>
+    </div> <!-- container //  --><br>
+    <div class="container">
+
+        <!-- ============================ COMPONENT 1 ================================= -->
+        <div class="card">
+            <div class="row no-gutters">
+                <aside class="col-md-6">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap">
+                            <a href="#"><img src="{{single_product.product_image.url}}"></a>
+                        </div> <!-- img-big-wrap.// -->
+                        <!-- <div class="thumbs-wrap">
+                            <a href="#" class="item-thumb"> <img src="../images/items/12-1.jpg"></a>
+                            <a href="#" class="item-thumb"> <img src="../images/items/12-2.jpg"></a>
+                            <a href="#" class="item-thumb"> <img src="../images/items/12.jpg"></a>
+                            <a href="#" class="item-thumb"> <img src="../images/items/4.jpg"></a>
+                        </div> thumbs-wrap.// -->
+                    </article> <!-- gallery-wrap .end// -->
+                </aside>
+                <main class="col-md-6 border-left">
+                    <article class="content-body">
+                        {% if single_product.is_new == True %}
+                        <span class="badge badge-danger"> NEW </span>
+                        {% endif %}
+
+
+
+                        <h2 class="title">{{single_product.product_name}}</h2>
+
+                        <div class="rating-wrap my-3">
+                            <ul class="rating-stars">
+                                <li style="width:80%" class="stars-active">
+                                    <img src="../images/icons/stars-active.svg" alt="">
+                                </li>
+                                <li>
+                                    <img src="../images/icons/starts-disable.svg" alt="">
+                                </li>
+                            </ul>
+                            <small class="label-rating text-muted">132 reviews</small>
+                            <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 orders
+                            </small>
+                        </div> <!-- rating-wrap.// -->
+
+                        <div class="mb-3">
+                            <var class="price h4">${{single_product.price}}</var>
+
+                        </div>
+
+                        <p>{{single_product.product_description}}</p>
+
+                        <dl class="row">
+                            <dt class="col-sm-3">Model#</dt>
+                            <dd class="col-sm-9">Odsy-1000</dd>
+
+                            
+
+                            <dt class="col-sm-3">Delivery</dt>
+                            <dd class="col-sm-9">Russia, USA, and Europe </dd>
+                        </dl>
+
+                        <hr>
+                        <div class="row">
+                            <!-- <div class="form-group col-md flex-grow-0">
+                                <label>Quantity</label>
+                                <div class="input-group mb-3 input-spinner">
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-light" type="button" id="button-plus"> + </button>
+                                    </div>
+                                    <input type="text" class="form-control" value="1">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-light" type="button" id="button-minus"> &minus; </button>
+                                    </div>
+                                </div>
+                            </div> col.// -->
+                            <div class="row">
+                                <div class = "item-option-select">
+                                <label>Select size</label>
+                                <select name="size" class="form-control">
+                                    <option value="" disabled selected>Choose Size</option>
+
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="small">Large</option>
+
+
+                                </select>
+                            </div>
+                            <div class = "item-option-select">
+                                <label>Select Color</label>
+                                <select name="size" class="form-control">
+                                    <option value="" disabled selected>Choose Color</option>
+
+                                    <option value="white">White</option>
+                                    <option value="red">Red</option>
+                                    <option value="blue">Blue</option>
+
+
+                                </select>
+                            </div>
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+                        {% if single_product.stock >= 1 %}
+                        <a href="#" class="btn  btn-primary"> Buy now </a>
+                        {% endif %}
+                        {% if not in_cart %}
+                        {% if single_product.stock >= 1 %}
+                        <a href="{% url 'add_cart' single_product.id %}" class="btn  btn-outline-primary"> <span
+                                class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i> </a>
+                        {% else %}
+                        <a href="" class="btn  btn-outline-danger"> <span class="text">Out of Stock</span> <i
+                                class="fas fa-shopping-cart"></i> </a>
+                        {% endif %}
+                        {% else %}
+                        <a href="{% url 'cart'%}" class="btn  btn-success"> <span class="text">Added to cart</span> <i
+                                class="fas fa-shopping-cart"></i> </a>
+                        {% endif %}
+
+                        {% if not in_wishlist %}
+                        <a data-original-title="Save to Wishlist" title=""
+                            href="{% url 'add_wishlist' single_product.id%}" class="btn btn-outline-primary"
+                            data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
+                        {% else %}
+                        <a href="{% url 'wishlist'%}" class="btn  btn-secondary"> <span class="text">Added to
+                                wishlist</span> <i class="fa fa-heart"></i> </a>
+                        {% endif %}
+                    </article> <!-- product-info-aside .// -->
+                </main> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+        <br><br>
+
+
+
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+
+
+
+</body>
+
+</html>
+{% endblock %}

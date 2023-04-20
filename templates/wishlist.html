@@ -1,0 +1,57 @@
+{% extends 'base.html'%}
+
+{% load static %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+        <h3 class="title-page">Wishlist</h3>
+
+        <!-- ============================ COMPONENTS 1  ================================= -->
+        <div class="row">
+            {% for items in wishlistItems %}
+            <div class="col-md-3">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap"> <img src="{{items.product.product_image.url}}"> </div>
+                    <figcaption class="info-wrap border-top">
+                        <a href="{{items.product.get_url}}" class="title">{{items.product.product_name}}</a>
+                        <div class="price mt-2">${{items.product.price}}</div> <!-- price-wrap.// -->
+
+                    </figcaption>
+                    <a href="{% url 'remove_from_wishlist' items.product.id %}" class="btn btn-outline-danger"> <span class="text-center">Remove</span> </a>
+                </figure> <!-- card // -->
+            </div> <!-- col.// -->
+            {% endfor %}
+
+        </div>
+        <!-- ============================ COMPONENTS 1  END .// ================================= -->
+
+        <br>
+
+
+        <!-- ============================ COMPONENTS 2  ================================= -->
+
+    </div> <!-- row.// -->
+    <!-- ============================ COMPONENTS 2  END .// ================================= -->
+
+    <br>
+
+
+    <br>
+
+
+
+
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+
+
+
+</body>
+
+</html>
+{% endblock %}
