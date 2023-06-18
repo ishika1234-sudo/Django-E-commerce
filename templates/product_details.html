@@ -36,6 +36,8 @@
                     </article> <!-- gallery-wrap .end// -->
                 </aside>
                 <main class="col-md-6 border-left">
+                <form action="{% url 'add_cart' single_product.id %}" method="POST">
+                    {% csrf_token %}
                     <article class="content-body">
                         {% if single_product.is_new == True %}
                         <span class="badge badge-danger"> NEW </span>
@@ -90,48 +92,42 @@
                                     </div>
                                 </div>
                             </div> col.// -->
+                            <div class = "item-option-select">
+                                <label>Select Color</label>
+                                <select name="color" class="form-control" required>
+                                    <option value="" disabled selected>Choose Color</option>
+                                    {% for i in single_product.variation_set.colors %} <!--variation_set - to fetch all variations and then colors-->
+                                    <option value="{{i.variation_value | lower}}">{{i.variation_value | capfirst}}</option>
+                                    {% endfor %}
+
+
+                                </select>
+                            </div>
                             <div class="row">
                                 <div class = "item-option-select">
                                 <label>Select size</label>
-                                <select name="size" class="form-control">
+                                <select name="size" class="form-control" required>
                                     <option value="" disabled selected>Choose Size</option>
-
-                                    <option value="small">Small</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="small">Large</option>
-
-
-                                </select>
-                            </div>
-                            <div class = "item-option-select">
-                                <label>Select Color</label>
-                                <select name="size" class="form-control">
-                                    <option value="" disabled selected>Choose Color</option>
-
-                                    <option value="white">White</option>
-                                    <option value="red">Red</option>
-                                    <option value="blue">Blue</option>
+                                    {% for i in single_product.variation_set.size %}
+                                    <option value="{{i.variation_value | lower}}">{{i.variation_value | capfirst }}</option>
+                                    {% endfor %}
 
 
                                 </select>
                             </div>
+                            
                             </div> <!-- col.// -->
                         </div> <!-- row.// -->
-                        {% if single_product.stock >= 1 %}
+                        <!-- {% if single_product.stock >= 1 %}
                         <a href="#" class="btn  btn-primary"> Buy now </a>
-                        {% endif %}
-                        {% if not in_cart %}
-                        {% if single_product.stock >= 1 %}
-                        <a href="{% url 'add_cart' single_product.id %}" class="btn  btn-outline-primary"> <span
-                                class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i> </a>
-                        {% else %}
-                        <a href="" class="btn  btn-outline-danger"> <span class="text">Out of Stock</span> <i
-                                class="fas fa-shopping-cart"></i> </a>
-                        {% endif %}
-                        {% else %}
+                        {% endif %} -->
+
+                        <!-- {% if not in_cart %} -->
+                        
+                        <!-- {% else %}
                         <a href="{% url 'cart'%}" class="btn  btn-success"> <span class="text">Added to cart</span> <i
                                 class="fas fa-shopping-cart"></i> </a>
-                        {% endif %}
+                        {% endif %} -->
 
                         {% if not in_wishlist %}
                         <a data-original-title="Save to Wishlist" title=""
@@ -141,7 +137,16 @@
                         <a href="{% url 'wishlist'%}" class="btn  btn-secondary"> <span class="text">Added to
                                 wishlist</span> <i class="fa fa-heart"></i> </a>
                         {% endif %}
+
+                        {% if single_product.stock <= 0 %}
+                        <a href="" class="btn  btn-outline-danger"> <span class="text">Out of Stock</span> <i
+                            class="fas fa-shopping-cart"></i> </a>
+                        
+                        {% else %}
+                        <button type="submit" class="btn  btn-outline-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i> </button>
+                        {% endif %}
                     </article> <!-- product-info-aside .// -->
+                </form>
                 </main> <!-- col.// -->
             </div> <!-- row.// -->
         </div> <!-- card.// -->
