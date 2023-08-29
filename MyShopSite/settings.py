@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'product',
     'cart',
     'wishlist',
+    'Account',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +146,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
 
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000/",]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
+    
+}

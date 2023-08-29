@@ -55,13 +55,23 @@
                         </div>
                         <div class="widget-header icontext">
                             <a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+                            {% if user.id is None %}
                             <div class="text">
                                 <span class="text-muted">Welcome!</span>
                                 <div>
-                                    <a href="#">Sign in</a> |
-                                    <a href="#"> Register</a>
+                                    <a href="{% url 'login' %}">Sign in</a> |
+                                    <a href="{% url 'register' %}"> Register</a>
                                 </div>
                             </div>
+                            {% else %}
+                            <div class="text">
+                                <span class="text-muted">Welcome {{user.username | capfirst}}</span>
+                                <div>
+                                    <a href="{% url 'logout' %}">Logout</a> |
+                                    <a href="{% url 'dashboard' %}"> Dashboard</a>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div> <!-- widgets-wrap.// -->
                 </div> <!-- col.// -->
