@@ -3,6 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from . models import Cart, CartItem
 from product.models import Product, Variation
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def get_cart_id(request): # private method
@@ -127,3 +129,26 @@ def cart(request, total=0, quantity=0, tax=0, grandTotal=0):
         'cartItems': cartItems
     }
     return render(request, 'cart.html', data)
+
+@login_required(login_url='login')
+def checkout(request, total=0, quantity=0, tax=0, grandTotal=0):
+    try:
+        cartItems = ''
+        cart = Cart.objects.get(cart_id = get_cart_id(request))
+        cartItems = CartItem.objects.filter(cart=cart, is_active=True)
+        for cartItem in cartItems:
+            total += cartItem.product.price * cartItem.quantity
+            quantity += cartItem.quantity
+        tax = (3 * total) / 100
+        grandTotal = total + tax
+    except ObjectDoesNotExist:
+        pass
+    data = {
+        'total': total,
+        'quantity': quantity,
+        'tax':tax,
+        'grandTotal': grandTotal,
+        'cart_items': cartItems
+    }
+    print('DATAAAA', data)
+    return render(request, 'checkout.html', data)

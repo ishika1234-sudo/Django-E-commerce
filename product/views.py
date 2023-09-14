@@ -17,6 +17,7 @@ def general_product_page(request):
     page = request.GET.get('page')
     paged_products = paginator.get_page(page)
     no_of_products = products.count()
+    
     data = {
         # 'products': products,
         'products': paged_products,
@@ -34,7 +35,7 @@ def product(request, category_slug=None, product_slug=None):
     brand = Brand.objects.all()
     brand_list = [ brands.brand_name for brands in brand]
     brand_dict = {brands.brand_name: brands.id for brands in brand }
-    print('branddddd ', list(brand), brand_list, brand_dict )
+    # print('branddddd ', list(brand), brand_list, brand_dict )
 
     if request.method == 'GET':
         kwargs.clear()
@@ -42,13 +43,13 @@ def product(request, category_slug=None, product_slug=None):
 
         if category_slug:
             categories = get_object_or_404(Category, slug = category_slug) # will return the category name else 404
-            print('CATEGORIES', category_slug, categories)
+            # print('CATEGORIES', category_slug, categories)
             products = Product.objects.all().filter(category=categories, is_available=True) 
             paginator = Paginator(products, 6)
             page = request.GET.get('page')
             paged_products = paginator.get_page(page)
             no_of_products = products.count()
-            # in_wishlist = Wishlist_Items.objects.filter(wishlist__wishlist_id = get_wishlist_id(request), product = products).exists() 
+            #in_wishlist = Wishlist_Items.objects.filter(wishlist__wishlist_id = get_wishlist_id(request), product = products).exists() 
 
         else:
             products = Product.objects.all().filter(is_available=True) 
@@ -62,8 +63,8 @@ def product(request, category_slug=None, product_slug=None):
             'products': paged_products,
             'product_count': no_of_products,
             'category':category_slug,
-            'brands':brand
-            # 'in_wishlist':in_wishlist
+            'brands':brand,
+            #'in_wishlist':in_wishlist
         }
         return render(request, 'product_type.html', data)
     
@@ -152,11 +153,13 @@ def product_details(request, category_slug, product_slug):
         if category_slug:
             categories = get_object_or_404(Category, slug=category_slug)
             products = Product.objects.get(category=categories, slug=product_slug)
-            print('productttss', products.stock)
             # single_product = Product.objects.get(category__slug = category_slug, slug = product_slug) # __ is the syntax to get access to the category slug first
             # print('single_product', single_product)
             in_cart = CartItem.objects.filter(cart__cart_id = get_cart_id(request), product = products).exists() # to first access cart then cart_id, as relation foreign key is there
-            in_wishlist = Wishlist_Items.objects.filter(wishlist__wishlist_id = get_wishlist_id(request), product = products).exists() 
+            if request.user.is_authenticated:
+                in_wishlist = Wishlist_Items.objects.filter(user=request.user, product = products).exists() 
+            else:
+                in_wishlist = Wishlist_Items.objects.filter(wishlist__wishlist_id = get_wishlist_id(request), product = products).exists() 
 
     except Exception as e:
         raise e

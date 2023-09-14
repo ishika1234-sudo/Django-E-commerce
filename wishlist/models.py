@@ -1,5 +1,6 @@
 from django.db import models
 from product.models import Product
+from django.conf import settings
 
 # Create your models here.
 class Wishlist(models.Model):
@@ -10,6 +11,7 @@ class Wishlist(models.Model):
         return self.wishlist_id
     
 class Wishlist_Items(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
